@@ -1,21 +1,21 @@
-# TODO
-# - system mpdf
 %define		plugin		dw2pdf
-%define		php_min_version 5.0.0
+%define		php_min_version 5.1.0
 %include	/usr/lib/rpm/macros.php
 Summary:	Export DokuWiki content to PDF
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20120123
-Release:	0.1
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
 # Source0-md5:	9a95f566ba0553e488f27ea58552b0f3
+Patch0:		system-mpdf.patch
 URL:		http://www.dokuwiki.org/plugin:dw2pdf
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	dokuwiki >= 20101107
 Requires:	php-common >= 4:%{php_min_version}
+Requires:	php-mpdf >= 5.3
 Conflicts:	dokuwiki-plugin-html2pdf
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -40,12 +40,15 @@ the latex plugin).
 %prep
 %setup -qc
 mv *-%{plugin}-*/* .
+%patch0 -p1
 
 version=$(awk '/^date/{print $2}' plugin.info.txt)
 if [ "$(echo "$version" | tr -d -)" != %{version} ]; then
 	: %%{version} mismatch
 #	exit 1
 fi
+
+rm -rf mpdf
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -69,5 +72,4 @@ fi
 %{plugindir}/*.php
 %{plugindir}/*.txt
 %{plugindir}/conf
-%{plugindir}/mpdf
 %{plugindir}/tpl

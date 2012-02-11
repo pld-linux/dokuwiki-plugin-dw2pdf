@@ -1,0 +1,11 @@
+--- dw2pdf/./DokuPDF.class.php~	2012-01-30 16:26:00.000000000 +0200
++++ dw2pdf/./DokuPDF.class.php	2012-02-11 14:39:27.747550956 +0200
+@@ -10,7 +10,7 @@
+ 
+ if(!defined('_MPDF_TEMP_PATH')) define('_MPDF_TEMP_PATH', $conf['tmpdir']);
+ if(!defined('_MPDF_TTFONTDATAPATH')) define('_MPDF_TTFONTDATAPATH',$conf['cachedir'].'/mpdf_ttf/');
+-require_once(dirname(__FILE__)."/mpdf/mpdf.php");
++require_once '/usr/share/php/mpdf/mpdf.php';
+ 
+ class DokuPDF extends mpdf {
+ 
