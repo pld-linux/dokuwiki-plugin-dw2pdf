@@ -16,6 +16,7 @@ BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	dokuwiki >= 20101107
 Requires:	php-common >= 4:%{php_min_version}
+Conflicts:	dokuwiki-plugin-html2pdf
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
