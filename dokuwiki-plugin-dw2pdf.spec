@@ -4,7 +4,7 @@
 Summary:	Export DokuWiki content to PDF
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20120123
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
@@ -14,7 +14,7 @@ URL:		http://www.dokuwiki.org/plugin:dw2pdf
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	dokuwiki >= 20101107
-Requires:	php-common >= 4:%{php_min_version}
+Requires:	php(core) >= %{php_min_version}
 Requires:	php-mpdf >= 5.3
 Conflicts:	dokuwiki-plugin-html2pdf
 BuildArch:	noarch
