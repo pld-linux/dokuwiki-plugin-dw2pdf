@@ -1,6 +1,5 @@
 %define		plugin		dw2pdf
 %define		php_min_version 5.1.0
-%include	/usr/lib/rpm/macros.php
 Summary:	Export DokuWiki content to PDF
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20120123
