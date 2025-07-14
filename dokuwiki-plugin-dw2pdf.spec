@@ -39,7 +39,7 @@ the latex plugin).
 %prep
 %setup -qc
 mv *-%{plugin}-*/* .
-%patch0 -p1
+%patch -P0 -p1
 
 version=$(awk '/^date/{print $2}' plugin.info.txt)
 if [ "$(echo "$version" | tr -d -)" != %{version} ]; then
