@@ -3,7 +3,7 @@
 Summary:	Export DokuWiki content to PDF
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20120123
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
