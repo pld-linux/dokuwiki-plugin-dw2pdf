@@ -1,20 +1,20 @@
+%define		subver		2026-01-08
+%define		ver		%(echo %{subver} | tr -d -)
 %define		plugin		dw2pdf
-%define		php_min_version 5.1.0
+%define		php_min_version 7.0.0
 Summary:	Export DokuWiki content to PDF
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20120123
-Release:	3
+Version:	%{ver}
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
-# Source0-md5:	9a95f566ba0553e488f27ea58552b0f3
-Patch0:		system-mpdf.patch
-URL:		http://www.dokuwiki.org/plugin:dw2pdf
+Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/%{subver}/%{plugin}-%{subver}.tar.gz
+# Source0-md5:	01be71898470e9add771f4c6d001566f
+URL:		https://www.dokuwiki.org/plugin:dw2pdf
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	dokuwiki >= 20101107
 Requires:	php(core) >= %{php_min_version}
-Requires:	php-mpdf >= 5.3
 Conflicts:	dokuwiki-plugin-html2pdf
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -22,12 +22,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		dokuconf	/etc/webapps/dokuwiki
 %define		dokudir		/usr/share/dokuwiki
 %define		plugindir	%{dokudir}/lib/plugins/%{plugin}
-%define		find_lang 	%{_usrlibrpm}/dokuwiki-find-lang.sh %{buildroot}
+%define		find_lang 	%{_rpmconfigdir}/dokuwiki-find-lang.sh %{buildroot}
 
-# no pear deps
+# bundled mpdf via composer vendor/ tree
 %define		_noautopear	pear
-
-# put it together for rpmbuild
 %define		_noautoreq	%{?_noautophp} %{?_noautopear}
 
 %description
@@ -38,16 +36,17 @@ the latex plugin).
 
 %prep
 %setup -qc
-mv *-%{plugin}-*/* .
-%patch -P0 -p1
+mv dokuwiki-plugin-%{plugin}-*/* .
+mv dokuwiki-plugin-%{plugin}-*/.[!.]* . 2>/dev/null || :
 
 version=$(awk '/^date/{print $2}' plugin.info.txt)
 if [ "$(echo "$version" | tr -d -)" != %{version} ]; then
 	: %%{version} mismatch
-#	exit 1
+	exit 1
 fi
 
-rm -rf mpdf
+# drop CI/test/dev files
+rm -rf .github _test .gitignore
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -68,7 +67,16 @@ fi
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %dir %{plugindir}
+%{plugindir}/README
 %{plugindir}/*.php
 %{plugindir}/*.txt
+%{plugindir}/*.css
+%{plugindir}/*.svg
+%{plugindir}/*.png
+%{plugindir}/composer.json
+%{plugindir}/composer.lock
+%{plugindir}/deleted.files
 %{plugindir}/conf
+%{plugindir}/syntax
 %{plugindir}/tpl
+%{plugindir}/vendor
